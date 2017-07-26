@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<title></title>
+	</head>
+		<a href="../trunk/directory/cssExprience/index.html">css类</a>
+		<a href="../trunk/directory/jsExprience/index.html">js类</a>
+		<a href="../trunk/directory/jsExprience/index.html">框架类</a>
+	<body>
+		<script type="text/javascript">
+			Object.prototype.addCSS = function(cssText) {
+				 //创建一个style元素
+				var style = document.createElement('style'),head = document.head || document.getElementsByTagName('head')[0]; //获取head元素
+				style.type = 'text/css'; //这里必须显示设置style元素的type属性为text/css，否则在ie中不起作用
+				if(style.styleSheet) { //IE
+					var func = function() {
+						try { //防止IE中stylesheet数量超过限制而发生错误
+							style.styleSheet.cssText = cssText;
+						} catch(e) {
+
+						}
+					}
+					if(style.styleSheet.disabled) {//如果当前styleSheet还不能用，则放到异步中则行
+						setTimeout(func, 10);
+					} else {
+						func();
+					}
+				} else { //w3c
+					var textNode = document.createTextNode(cssText);//w3c浏览器中只要创建文本节点插入到style元素中就行了
+					style.appendChild(textNode);
+				}
+				head.appendChild(style); //把创建的style元素插入到head中   
+			};
+			//使用
+			Object.addCSS('#demo{ height: 30px; background:#f00;}');
+		</script>
+	</body>
+
+</html>
