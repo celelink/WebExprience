@@ -1,23 +1,40 @@
 <!DOCTYPE html>
 <html>
 
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
-		<title>js类集合</title>
-		<link rel="stylesheet" type="text/css" href="../../plugin/highlight/styles/agate.css" />
-		<style type="text/css">
-			body,h3{margin:0}
-			.content{padding:10px}
-		</style>
-	</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+        <title>js类集合</title>
+        <link rel="stylesheet" type="text/css" href="../../plugin/highlight/styles/agate.css" />
+        <style type="text/css">
+            body,
+            h3 {
+                margin: 0
+            }
+            h3{
+                text-align: center;
+                padding-top:10px
+            }
+            .content {
+                padding: 10px
+            }
+            .box-shadow{
+                ;webkit-box-shadow:0 0 10px rgba(0, 204, 204, .5);  
+                -moz-box-shadow:0 0 10px rgba(0, 204, 204, .5);  
+                box-shadow:0 0 10px rgba(0, 204, 204, .5); 
+                margin-bottom:15px;
+                padding-bottom: 10px;
+                border-radius:8px;
+            }
+            pre:last-child{margin-bottom:0}
+        </style>
+    </head>
 
-	<body>
-<div class="content">
-<div>
+    <body>
+        <div class="content">
+<div class="box-shadow">
 <h3>利用js动态创建css类</h3>
-<pre>
-<code class="js">Object.prototype.addCSS = function(cssText) {
+<pre><code class="js">Object.prototype.addCSS = function(cssText) {
 	 //创建一个style元素   获取head元素
 	var style = document.createElement('style'),
 	head = document.head || document.getElementsByTagName('head')[0];
@@ -42,15 +59,12 @@
 	}
 	head.appendChild(style); //把创建的style元素插入到head中   
 };
-</code>
-</pre>
-<pre>
-<code class="js">//使用
+</code></pre>
+<pre><code class="js">//使用
 Object.addCSS('#demo{ height: 30px; background:#f00;}');
-</code>
-</pre>
+</code></pre>
 </div>
-<div>
+<div class="box-shadow">
 <h3>js使用base64技术压缩图片</h3>
 <pre>
 <code class="js">Object.prototype.fileChange=function(f) {
@@ -67,46 +81,299 @@ Object.addCSS('#demo{ height: 30px; background:#f00;}');
 };
 //需要传入路劲，对象，回调函数
 function dealImage(path, obj, callback) {
-	var img = new Image();
-	img.src = path;
-	img.onload = function() {
-		var that = this;
-		// 默认按比例压缩
-		var w = that.width,
-			h = that.height,
-			scale = w / h;
-		w = obj.width || w;
-		h = obj.height || (w / scale);
-		var quality = this.d; // 默认图片质量为0.7
-		//生成canvas
-		var canvas = document.createElement('canvas');
-		var ctx = canvas.getContext('2d');
-		// 创建属性节点
-		var anw = document.createAttribute("width");
-		anw.nodeValue = w;
-		var anh = document.createAttribute("height");
-		anh.nodeValue = h;
-		canvas.setAttributeNode(anw);
-		canvas.setAttributeNode(anh);
-		ctx.drawImage(that, 0, 0, w, h);
-		// 图像质量
-		if(obj.quality && obj.quality <= 1 && obj.quality > 0) {
-			quality = obj.quality;
-		}
-		// quality值越小，所绘制出的图像越模糊
-		var base64 = canvas.toDataURL('image/jpeg', quality);
-		// 回调函数返回base64的值
-		callback(base64);
-	}
+    var img = new Image();
+    img.src = path;
+    img.onload = function() {
+        var that = this;
+        // 默认按比例压缩
+        var w = that.width,
+        	h = that.height,
+        	scale = w / h;
+        w = obj.width || w;
+        h = obj.height || (w / scale);
+        var quality = this.d; // 默认图片质量为0.7
+        //生成canvas
+        var canvas = document.createElement('canvas');
+        var ctx = canvas.getContext('2d');
+        // 创建属性节点
+        var anw = document.createAttribute("width");
+        anw.nodeValue = w;
+        var anh = document.createAttribute("height");
+        anh.nodeValue = h;
+        canvas.setAttributeNode(anw);
+        canvas.setAttributeNode(anh);
+        ctx.drawImage(that, 0, 0, w, h);
+        // 图像质量
+        if(obj.quality && obj.quality <= 1 && obj.quality > 0) {
+        	quality = obj.quality;
+        }
+        // quality值越小，所绘制出的图像越模糊
+        var base64 = canvas.toDataURL('image/jpeg', quality);
+        // 回调函数返回base64的值
+        callback(base64);
+    }
 }
-</code>
-</pre>
+</code></pre>
+</div>
+<div class="box-shadow">
+<h3>使用prototype进行封装</h3>
+<pre><code class="js">//前台调用
+var $ = function () {
+	return new Base();
+}
+
+//基础库
+function Base() {
+	//创建一个数组，来保存获取的节点和节点数组
+	this.elements = [];
+}
+
+//获取ID节点
+Base.prototype.getId = function (id) {
+	this.elements.push(document.getElementById(id));
+	return this;
+};
+
+//获取元素节点数组
+Base.prototype.getTagName = function (tag) {
+	var tags = document.getElementsByTagName(tag);
+	for (var i = 0; i < tags.length; i ++) {
+		this.elements.push(tags[i]);
+	}
+	return this;
+};
+
+//获取CLASS节点数组
+Base.prototype.getClass = function (className, idName) {
+    var node = null;
+    if (arguments.length == 2) {
+	    node = document.getElementById(idName);
+    } else {
+	    node = document;
+    }
+    var all = node.getElementsByTagName('*');
+    for (var i = 0; i < all.length; i ++) {
+	    if (all[i].className == className) {
+		    this.elements.push(all[i]);
+	    }
+    }
+    return this;
+}
+
+//获取某一个节点
+Base.prototype.getElement = function (num) {	
+    var element = this.elements[num];
+    this.elements = [];
+    this.elements[0] = element;
+    return this;
+};
+
+//设置CSS
+Base.prototype.css = function (attr, value) {
+    for (var i = 0; i < this.elements.length; i ++) {
+        if (arguments.length == 1) {
+            if (typeof window.getComputedStyle != 'undefined') {//W3C
+                return window.getComputedStyle(this.elements[i], null)[attr];
+            } else if (typeof this.elements[i].currentStyle != 'undeinfed') {//IE
+                return this.elements[i].currentStyle[attr];
+            }
+        }
+        this.elements[i].style[attr] = value;
+    }
+    return this;
+}
+
+//添加Class
+Base.prototype.addClass = function (className) {
+    for (var i = 0; i < this.elements.length; i ++) {
+        if (!this.elements[i].className.match(new RegExp('(\\s|^)' +className +'(\\s|$)'))) {
+            this.elements[i].className += ' ' + className;
+        }
+    }
+    return this;
+}
+
+//移除Class
+Base.prototype.removeClass = function (className) {
+    for (var i = 0; i < this.elements.length; i ++) {
+        if (this.elements[i].className.match(new RegExp('(\\s|^)' +className +'(\\s|$)'))) {
+            this.elements[i].className = this.elements[i].className.replace(new RegExp('(\\s|^)' +className +'(\\s|$)'), ' ');
+        }
+    }
+    return this;
+}
+
+//添加link或style的CSS规则
+Base.prototype.addRule = function (num, selectorText, cssText, position) {
+    var sheet = document.styleSheets[num];
+    if (typeof sheet.insertRule != 'undefined') {//W3C
+        sheet.insertRule(selectorText + '{' + cssText + '}', position);
+    } else if (typeof sheet.addRule != 'undefined') {//IE
+        sheet.addRule(selectorText, cssText, position);
+    }
+    return this;
+}
+
+//移除link或style的CSS规则
+Base.prototype.removeRule = function (num, index) {
+    var sheet = document.styleSheets[num];
+    if (typeof sheet.deleteRule != 'undefined') {//W3C
+        sheet.deleteRule(index);
+    } else if (typeof sheet.removeRule != 'undefined') {//IE
+        sheet.removeRule(index);
+    }
+    return this;
+}
+
+//设置innerHTML
+Base.prototype.html = function (str) {
+    for (var i = 0; i < this.elements.length; i ++) {
+        if (arguments.length == 0) {
+            return this.elements[i].innerHTML;
+        }
+        this.elements[i].innerHTML = str;
+    }
+    return this;
+}
+
+//触发点击事件
+Base.prototype.click = function (fn) {
+    for (var i = 0; i < this.elements.length; i ++) {
+        this.elements[i].onclick = fn;
+    }
+    return this;
+}
+</code></pre>
+<pre><code class="js">//调用
+$().getId('box').css('color', 'red');
+$().getId('pox').css('color', 'blue');
+$().getId('box').addClass('a').addClass('b').addClass('a');
+$().getId('box').addClass('a').addClass('b').removeClass('a');
+$().addRule(0, 'body', 'background:green', 0);
+$().removeRule(0).removeRule(0);
+</code></pre>
+</div>
+<div class="box-shadow">
+<h3>base64加密解密实战</h3>
+<pre>
+<code class="js">function Base64() {  
+    // private property  
+    _keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";  
+   
+    // public method for encoding  
+    this.encode = function (input) {  
+        var output = "";  
+        var chr1, chr2, chr3, enc1, enc2, enc3, enc4;  
+        var i = 0;  
+        input = _utf8_encode(input);  
+        while (i < input.length) {  
+            chr1 = input.charCodeAt(i++);  
+            chr2 = input.charCodeAt(i++);  
+            chr3 = input.charCodeAt(i++);  
+            enc1 = chr1 >> 2;  
+            enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);  
+            enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);  
+            enc4 = chr3 & 63;  
+            if (isNaN(chr2)) {  
+                enc3 = enc4 = 64;  
+            } else if (isNaN(chr3)) {  
+                enc4 = 64;  
+            }  
+            output = output +  
+            _keyStr.charAt(enc1) + _keyStr.charAt(enc2) +  
+            _keyStr.charAt(enc3) + _keyStr.charAt(enc4);  
+        }  
+        return output;  
+    }  
+   
+    // public method for decoding  
+    this.decode = function (input) {  
+        var output = "";  
+        var chr1, chr2, chr3;  
+        var enc1, enc2, enc3, enc4;  
+        var i = 0;  
+        input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");  
+        while (i < input.length) {  
+            enc1 = _keyStr.indexOf(input.charAt(i++));  
+            enc2 = _keyStr.indexOf(input.charAt(i++));  
+            enc3 = _keyStr.indexOf(input.charAt(i++));  
+            enc4 = _keyStr.indexOf(input.charAt(i++));  
+            chr1 = (enc1 << 2) | (enc2 >> 4);  
+            chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);  
+            chr3 = ((enc3 & 3) << 6) | enc4;  
+            output = output + String.fromCharCode(chr1);  
+            if (enc3 != 64) {  
+                output = output + String.fromCharCode(chr2);  
+            }  
+            if (enc4 != 64) {  
+                output = output + String.fromCharCode(chr3);  
+            }  
+        }  
+        output = _utf8_decode(output);  
+        return output;  
+    }  
+   
+    // private method for UTF-8 encoding  
+    _utf8_encode = function (string) {  
+        string = string.replace(/\r\n/g,"\n");  
+        var utftext = "";  
+        for (var n = 0; n < string.length; n++) {  
+            var c = string.charCodeAt(n);  
+            if (c < 128) {  
+                utftext += String.fromCharCode(c);  
+            } else if((c > 127) && (c < 2048)) {  
+                utftext += String.fromCharCode((c >> 6) | 192);  
+                utftext += String.fromCharCode((c & 63) | 128);  
+            } else {  
+                utftext += String.fromCharCode((c >> 12) | 224);  
+                utftext += String.fromCharCode(((c >> 6) & 63) | 128);  
+                utftext += String.fromCharCode((c & 63) | 128);  
+            }  
+   
+        }  
+        return utftext;  
+    }  
+   
+    // private method for UTF-8 decoding  
+    _utf8_decode = function (utftext) {  
+        var string = "";  
+        var i = 0;  
+        var c = c1 = c2 = 0;  
+        while ( i < utftext.length ) {  
+            c = utftext.charCodeAt(i);  
+            if (c < 128) {  
+                string += String.fromCharCode(c);  
+                i++;  
+            } else if((c > 191) && (c < 224)) {  
+                c2 = utftext.charCodeAt(i+1);  
+                string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));  
+                i += 2;  
+            } else {  
+                c2 = utftext.charCodeAt(i+1);  
+                c3 = utftext.charCodeAt(i+2);  
+                string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));  
+                i += 3;  
+            }  
+        }  
+        return string;  
+    }  
+}  
+</code></pre>
+<pre><code class="js">//使用方法
+var str = '124中文内容';  
+var base = new Base64()
+var result = base.encode(str);  
+document.write("加密内容编码为"+result); //加密
+console.log(base.decode(result));//解密
+</code></pre>
 </div>
 </div>
-	</body>
-	<script src="../../plugin/highlight/highlight.pack.js" type="text/javascript" charset="utf-8"></script>
-	<script>
-		hljs.initHighlightingOnLoad();
-	</script>
+    </body>
+    <script src="../../plugin/highlight/highlight.pack.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+        hljs.initHighlightingOnLoad();
+    </script>
 
 </html>
+
+

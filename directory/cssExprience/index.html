@@ -4,38 +4,124 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
-		<title>css类集合</title>
+		<title>css样式集合</title>
+		<link rel="stylesheet" type="text/css" href="../../plugin/highlight/styles/agate.css" />
+		<link rel="stylesheet" type="text/css" href="css/box-shadow.css"/>
+		<style type="text/css">
+			body,
+            h3 {
+                margin: 0;
+            }
+            h3{
+                text-align: center;
+                padding-top:10px
+            }
+            .content {
+                padding: 10px
+            }
+           [class^="box-shadow-"]{
+               width:200px;
+               height: 200px;
+               background: #ccc;
+               margin:0 auto;
+               display: inline-block;
+           }
+           .element2 {
+               width:50%;
+               height:200px;
+                background: url(http://www.cnblogs.com/skins/LoveGiveHeart/images/bg_body.jpg) repeat;
+                -webkit-mask: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.58)), to(rgba(0, 0, 0, 0.5)));
+            }
+            .hljs {
+                display: inline-block;
+            }
+		</style>
 	</head>
-		<a href="css_exprience">css类</a>
-		<a href="js_exprience">js类</a>
-	<body>
-		<script type="text/javascript">
-			Object.prototype.addCSS = function(cssText) {
-				 //创建一个style元素
-				var style = document.createElement('style'),head = document.head || document.getElementsByTagName('head')[0]; //获取head元素
-				style.type = 'text/css'; //这里必须显示设置style元素的type属性为text/css，否则在ie中不起作用
-				if(style.styleSheet) { //IE
-					var func = function() {
-						try { //防止IE中stylesheet数量超过限制而发生错误
-							style.styleSheet.cssText = cssText;
-						} catch(e) {
 
-						}
-					}
-					if(style.styleSheet.disabled) {//如果当前styleSheet还不能用，则放到异步中则行
-						setTimeout(func, 10);
-					} else {
-						func();
-					}
-				} else { //w3c
-					var textNode = document.createTextNode(cssText);//w3c浏览器中只要创建文本节点插入到style元素中就行了
-					style.appendChild(textNode);
-				}
-				head.appendChild(style); //把创建的style元素插入到head中   
-			};
-			//使用
-			Object.addCSS('#demo{ height: 30px; background:#f00;}');
-		</script>
+	<body>
+<div class="content">
+<div>
+<h3>CSS之背景阴影</h3>
+<pre><code class="js">.box-shadow-1{  
+  -webkit-box-shadow: 3px 3px 3px;  
+  -moz-box-shadow: 3px 3px 3px;  
+  box-shadow: 3px 3px 3px;  
+}  
+  
+</code></pre>
+<div class="box-shadow-1"></div>
+<pre><code class="js"> .box-shadow-2{  
+  -webkit-box-shadow:0 0 10px #0CC;  
+  -moz-box-shadow:0 0 10px #0CC;  
+  box-shadow:0 0 10px #0CC;  
+}  
+</code></pre>
+<div class="box-shadow-2"></div>
+<pre><code class="js">.box-shadow-3{  
+  -webkit-box-shadow:0 0 10px rgba(0, 204, 204, .5);  
+  -moz-box-shadow:0 0 10px rgba(0, 204, 204, .5);  
+  box-shadow:0 0 10px rgba(0, 204, 204, .5);  
+} 
+</code></pre>
+<div class="box-shadow-3"></div>
+<pre><code class="js">.box-shadow-4{  
+  -webkit-box-shadow:0 0 10px 15px #0CC;  
+  -moz-box-shadow:0 0 10px 15px #0CC;  
+  box-shadow:0 0 10px 15px #0CC;  
+} 
+</code></pre>
+<div class="box-shadow-4"></div>
+<pre><code class="js">.box-shadow-5{  
+  -webkit-box-shadow:inset 0 0 10px #0CC;  
+  -moz-box-shadow:inset 0 0 10px #0CC;  
+  box-shadow:inset 0 0 10px #0CC;  
+} 
+</code></pre>
+<div class="box-shadow-5"></div>
+<pre><code class="js">.box-shadow-6{  
+    box-shadow:-10px 0 10px red, /*左边阴影*/  
+    10px 0 10px yellow, /*右边阴影*/  
+    0 -10px 10px blue, /*顶部阴影*/  
+    0 10px 10px green; /*底边阴影*/  
+}  
+</code></pre>
+<div class="box-shadow-6"></div>
+<pre><code class="js">.box-shadow-7{  
+    box-shadow:0 0 10px 5px black,  
+    0 0 10px 20px red;  
+}  
+</code></pre>
+<div class="box-shadow-7"></div>
+<code><pre>.box-shadow-8{  
+    box-shadow:0 0 10px 20px red,  
+    0 0 10px 5px black;  
+}  
+</code></pre>
+<div class="box-shadow-8"></div>
+<code><pre>.box-shadow-9{  
+    border-top-left-radius:60px 90px ;
+    border-bottom-right-radius: 60px 90px;
+    box-shadow: 64px 64px 24px 40px rgba(0,0,0,0.4),12px 12px 0 10px rgba(0,0,0,0.4) inset;  
+}
+</code>
+</pre>
+<div class="box-shadow-9"></div>
+<a href="http://www.css88.com/tool/css3Preview/Box-Shadow.html">css阴影制作工具</a>
+</div>
+<code><pre>.element2 {<!--蒙版效果-->
+    width:50%;
+    height:200px;
+    background: url(http://www.cnblogs.com/skins/LoveGiveHeart/images/bg_body.jpg) repeat;
+    -webkit-mask: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.58)), to(rgba(0, 0, 0, 0.5)));
+}
+</code>
+</pre>
+<div class="element2"></div>
+</div>
 	</body>
+	<script src="../../plugin/highlight/highlight.pack.js" type="text/javascript" charset="utf-8"></script>
+	<script>
+		hljs.initHighlightingOnLoad();
+	</script>
 
 </html>
